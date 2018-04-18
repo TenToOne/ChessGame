@@ -2,11 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Chess extends JFrame implements ActionListener {
-    static String[] board = {"b1","n1","k","b1","*","*","p1","*","*","?","*","*","*","P1","*","*","B1","K","N1","B1"};
+    static String[] board = {"p1","p1","k","p1","*","*","p1","*","*","?","*","*","*","P1","*","*","R1","K","N1","B1"};
     static char turn = 'w';
     boolean item=true;
+    boolean active = false;
     boolean  skill=true;
 
     // GUI STUFF ================================================================================
@@ -22,6 +25,7 @@ public class Chess extends JFrame implements ActionListener {
     JButton btnSkill = new JButton("SKILL");
     Font f = new Font("DIALOG", Font.PLAIN, 100);
 
+
     public void clearBoard(){
         for (int i=0; i<20; i++) {
             if (i % 8 == 0||i % 8 == 2||i % 8 == 5||i % 8 == 7) {
@@ -30,6 +34,14 @@ public class Chess extends JFrame implements ActionListener {
             else {
                 btnSquare[i].setBackground(Color.WHITE);
             }
+        }
+        if(active){
+            int add = 0;
+            if(turn=='w') add=8;
+            btnSquare[4+add].setBackground(Color.BLUE);
+            btnSquare[5+add].setBackground(Color.BLUE);
+            btnSquare[6+add].setBackground(Color.BLUE);
+            active=false;
         }
     }
 
@@ -76,6 +88,9 @@ public class Chess extends JFrame implements ActionListener {
         setVisible(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+
+
+
         // Display legal moves if they exist
     }
 
@@ -117,20 +132,39 @@ public class Chess extends JFrame implements ActionListener {
                     doMove(a - 1, b - 1, turn);        // Player's turn
                     if (!isItem()) lblMoves.setText("");
                     a = b = -1;
-                    clearBoard();
-                    display();
                     if(more){
                         swapTurn();
                         more=false;
                     }
+                    clearBoard();
+                    display();
+                    doAI();
+                    if (!isItem()) lblMoves.setText("");
+                    clearBoard();
+                    display();
                 }
-
                 // Display message if game is over
                 if (isGameOver()) {
                     lblStatus.setText("");
                 }
             }
         }
+    }
+
+    public void doAI(){
+        ArrayList<Integer> aPlace = new ArrayList<Integer>();
+        ArrayList<Integer> bPlace = new ArrayList<Integer>();
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
+                if (validateMove(i, j, turn)) {
+                    aPlace.add(i);
+                    bPlace.add(j);
+                }
+            }
+        }
+        int random = (int)(Math.random()*aPlace.size());
+        doMove(aPlace.get(random),bPlace.get(random), turn);
+
     }
 
     public void display() {
@@ -140,21 +174,17 @@ public class Chess extends JFrame implements ActionListener {
                 case "b1": btnSquare[i].setText("\u265d"); break;
                 case "p1": btnSquare[i].setText("\u265f"); break;
                 case "n1": btnSquare[i].setText("\u265e"); break;
+                case "r1": btnSquare[i].setText("\u265c"); break;
                 case "k": btnSquare[i].setText("\u265a"); break;
                 case "B1": btnSquare[i].setText("\u2657"); break;
                 case "P1": btnSquare[i].setText("\u2659"); break;
                 case "N1": btnSquare[i].setText("\u2658"); break;
+                case "R1": btnSquare[i].setText("\u2656"); break;
                 case "K": btnSquare[i].setText("\u2654"); break;
                 case "?": btnSquare[i].setText("?"); break;
                 default: btnSquare[i].setText(""); break;
             }
         }
-    }
-
-    public static void main(String[] args) {
-        // Create chess board object and displays it
-        Chess c = new Chess();
-        c.display();
     }
 
     public void doMove(int a, int b, char colour) {
@@ -263,6 +293,15 @@ public class Chess extends JFrame implements ActionListener {
                     //                   System.out.println(4);
                     return false;
                 }
+            case "R1":
+            case "r1":
+                if (Math.abs(dr)+Math.abs(dc)==1) {
+                    return true;
+                }
+                else {
+                    //                   System.out.println(4);
+                    return false;
+                }
             default:
                 return false;
         }
@@ -292,11 +331,27 @@ public class Chess extends JFrame implements ActionListener {
             if(board[i].equals("?")) return false;
         }
         lblMoves.setText("Use Item : Full Swing");
-        board[4]="*";
-        board[5]="*";
-        board[6]="*";
+        if(turn=='b') {
+            board[4] = "*";
+            board[5] = "*";
+            board[6] = "*";
+        }
+        else {
+            board[4+8] = "*";
+            board[5+8] = "*";
+            board[6+8] = "*";
+        }
         item=false;
+        if(!item){
+            active =true;
+        }
         return true;
+    }
+
+    public static void main(String[] args) {
+        // Create chess board object and displays it
+        Chess c = new Chess();
+        c.display();
     }
 
 }
