@@ -1,7 +1,9 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Chess extends JFrame implements ActionListener {
@@ -10,6 +12,7 @@ public class Chess extends JFrame implements ActionListener {
     boolean item=true;
     boolean active = false;
     boolean  skill=true;
+    static int[] exp = {0,0,0,0};
 
     // GUI STUFF ================================================================================
     JPanel pnlNull = new JPanel();
@@ -22,6 +25,7 @@ public class Chess extends JFrame implements ActionListener {
     JLabel lblMoves = new JLabel();
     JButton btnSquare[] = new JButton[20];
     JButton btnSkill = new JButton("SKILL");
+
     Font f = new Font("DIALOG", Font.PLAIN, 100);
 
 
@@ -74,7 +78,11 @@ public class Chess extends JFrame implements ActionListener {
         lblStatus.setForeground(Color.RED);
         lblWin.setForeground(Color.BLUE);
 
-        display();
+        try {
+            display();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         setTitle("ChessGame");
         setResizable(false);
         setSize(540, 960);
@@ -96,55 +104,75 @@ public class Chess extends JFrame implements ActionListener {
     int a=-1,b=-1;
     boolean more = false;
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnSkill&skill) {
-            more=true;
-            lblMoves.setText("Use Skill : One More");
-            skill=false;
-        }
-        else {
-            for (int i = 0; i < 20; i++) {
-                if (e.getSource() == btnSquare[i]) {
-                    if (a == -1) a = i + 1;
-                    else b = i + 1;
+        if(turn=='b'){
+            if (!isGameOver()) {
+                doAI();
+                if (!isItem()) lblMoves.setText("");
+                clearBoard();
+                try {
                     display();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                if (isGameOver()) {
+                    lblStatus.setText("");
                 }
             }
-            if (a != -1 && b == -1) {
-                int count = 0;
-                for (int j = 0; j < 20; j++) {
-                    // Destination and source squares must be different
-                    if (a - 1 != j) {
-                        // Add to the list of valid moves for the current player
-                        if (validateMove(a - 1, j, turn)) {
-                            btnSquare[j].setBackground(Color.RED);
-                            count++;
+        }
+        else {
+            if (e.getSource() == btnSkill & skill) {
+                more = true;
+                lblMoves.setText("Use Skill : One More");
+                skill = false;
+            } else {
+                for (int i = 0; i < 20; i++) {
+                    if (e.getSource() == btnSquare[i]) {
+                        if (a == -1) a = i + 1;
+                        else b = i + 1;
+                        try {
+                            display();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
                         }
                     }
                 }
-                if (count == 0) {
-                    a = -1;
-                    lblStatus.setText("Invalid move");
-                }
-            }
-            if (b != -1) {
-                if (!isGameOver()) {
-                    doMove(a - 1, b - 1, turn);        // Player's turn
-                    if (!isItem()) lblMoves.setText("");
-                    a = b = -1;
-                    if(more){
-                        swapTurn();
-                        more=false;
+                if (a != -1 && b == -1) {
+                    int count = 0;
+                    for (int j = 0; j < 20; j++) {
+                        // Destination and source squares must be different
+                        if (a - 1 != j) {
+                            // Add to the list of valid moves for the current player
+                            if (validateMove(a - 1, j, turn)) {
+                                btnSquare[j].setBackground(Color.RED);
+                                count++;
+                            }
+                        }
                     }
-                    clearBoard();
-                    display();
-                    doAI();
-                    if (!isItem()) lblMoves.setText("");
-                    clearBoard();
-                    display();
+                    if (count == 0) {
+                        a = -1;
+                        lblStatus.setText("Invalid move");
+                    }
                 }
-                // Display message if game is over
-                if (isGameOver()) {
-                    lblStatus.setText("");
+                if (b != -1) {
+                    if (!isGameOver()) {
+                        doMove(a - 1, b - 1, turn);        // Player's turn
+                        if (!isItem()) lblMoves.setText("");
+                        a = b = -1;
+                        if (more) {
+                            swapTurn();
+                            more = false;
+                        }
+                        clearBoard();
+                        try {
+                            display();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    // Display message if game is over
+                    if (isGameOver()) {
+                        lblStatus.setText("");
+                    }
                 }
             }
         }
@@ -166,7 +194,7 @@ public class Chess extends JFrame implements ActionListener {
 
     }
 
-    public void display() {
+    public void display() throws IOException {
         // Display Unicode chess characters
         for (int i=0; i<20; i++) {
             switch (board[i]) {
@@ -176,12 +204,22 @@ public class Chess extends JFrame implements ActionListener {
                 case "r1": btnSquare[i].setText("\u265c"); break;
                 case "k": btnSquare[i].setText("\u265a"); break;
                 case "B1": btnSquare[i].setText("\u2657"); break;
+                case "B2":// btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("다운로드.jpg"))));break;
+                    btnSquare[i].setText("B"); break;
                 case "P1": btnSquare[i].setText("\u2659"); break;
+                case "P2":
+                    btnSquare[i].setText("P"); break;
                 case "N1": btnSquare[i].setText("\u2658"); break;
+                case "N2":
+                    btnSquare[i].setText("N"); break;
                 case "R1": btnSquare[i].setText("\u2656"); break;
+                case "R2":// btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("룩.jpg"))));break;
+                    btnSquare[i].setText("R"); break;
                 case "K": btnSquare[i].setText("\u2654"); break;
                 case "?": btnSquare[i].setText("?"); break;
-                default: btnSquare[i].setText(""); break;
+                default:
+//                    btnSquare[i].setIcon(new ImageIcon());
+                    btnSquare[i].setText("");
             }
         }
     }
@@ -189,6 +227,26 @@ public class Chess extends JFrame implements ActionListener {
     public void doMove(int a, int b, char colour) {
         // Perform move if it is a valid move and the king is not moving into check
         if (validateMove(a, b, colour)) {
+            if(colour=='w'){
+                if(board[b].charAt(0)!='*'){
+                    switch(board[a]){
+                        case "P1" : exp[0]++; break;
+                        case "R1" : exp[1]++; break;
+                        case "B1" : exp[2]++; break;
+                        case "N1" : exp[3]++; break;
+                    }
+                }
+                for(int i=0;i<4;i++){
+                    if(exp[i]==1) {
+                        switch (i) {
+                            case 0 : if(board[a]=="P1") board[a] = "P2"; break;
+                            case 1 : if(board[a]=="R1") board[a] = "R2"; break;
+                            case 2 : if(board[a]=="B1") board[a] = "B2"; break;
+                            case 3 : if(board[a]=="N1") board[a] = "N2"; break;
+                        }
+                    }
+                }
+            }
             board[b] = board[a];
             board[a]="*";
             swapTurn();
@@ -261,6 +319,10 @@ public class Chess extends JFrame implements ActionListener {
    //                 System.out.println(2);
                     return false;
                 }
+            case "P2" :
+                if(Math.abs(dc)<=1&&dr==-1)
+                    return true;
+                else return false;
             case "K":
             case "k":
                 // Kings can only move one square in any direction
@@ -281,12 +343,29 @@ public class Chess extends JFrame implements ActionListener {
                 else {
                     return false;
                 }
+            case "B2":
+                if (Math.abs(dr)==Math.abs(dc)&&Math.abs(dr)<=2) {
+                    if(Math.abs(dr)==1) return  true;
+                    else if(Math.abs(dr)==2&&board[a+(dr*2)+(dc/2)].equals("*")) return  true;
+                    else return false;
+                }
+                else {
+                    return false;
+                }
             case "N1":
             case "n1":
                 if (Math.abs(dr)+Math.abs(dc)==3&&(Math.abs(dr)==1|Math.abs(dr)==2)) {
                     if(Math.abs(dr)==2&&board[a+(dr*4)].equals("*")&&board[a+(dr*2)].equals("*")) return true;
                     else if(Math.abs(dc)==2&&board[a+(dc)].equals("*")&&board[a+(dc/2)].equals("*")) return true;
                     else return false;
+                }
+                else {
+                    //                   System.out.println(4);
+                    return false;
+                }
+            case "N2":
+                if (Math.abs(dr)+Math.abs(dc)==3&&(Math.abs(dr)==1|Math.abs(dr)==2)) {
+                    return true;
                 }
                 else {
                     //                   System.out.println(4);
@@ -299,6 +378,16 @@ public class Chess extends JFrame implements ActionListener {
                 }
                 else {
                     //                   System.out.println(4);
+                    return false;
+                }
+            case "R2":
+                if ((dc==0&&Math.abs(dr)<=2)||(dr==0&&Math.abs(dc)<=2)) {
+                    if(Math.abs(dr)+Math.abs(dc)==1) return true;
+                    else if(Math.abs(dr)==2&&board[a+dr*2].equals("*")) return  true;
+                    else if(Math.abs(dc)==2&&board[a+dc/2].equals("*")) return  true;
+                    else return false;
+                }
+                else {
                     return false;
                 }
             default:
@@ -350,7 +439,11 @@ public class Chess extends JFrame implements ActionListener {
     public static void main(String[] args) {
         // Create chess board object and displays it
         Chess c = new Chess();
-        c.display();
+        try {
+            c.display();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
