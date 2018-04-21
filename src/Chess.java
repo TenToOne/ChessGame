@@ -1,3 +1,4 @@
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -15,18 +16,17 @@ public class Chess extends JFrame implements ActionListener {
     static int[] exp = {0,0,0,0};
 
     // GUI STUFF ================================================================================
-    JPanel pnlNull = new JPanel();
+    JLabel lblLevel = new JLabel("Level1");
     JPanel pnlGrid = new JPanel(new GridLayout(5,4));
     JPanel pnlFlow = new JPanel(new FlowLayout());
     JLabel lblStatus = new JLabel();
-    JLabel lblTurn = new JLabel("White's turn.");
-    JLabel lblCheck = new JLabel();
+    JLabel lblTurn = new JLabel("You're turn : selcet your fmaily");
     JLabel lblWin = new JLabel();
     JLabel lblMoves = new JLabel();
     JButton btnSquare[] = new JButton[20];
-    JButton btnSkill = new JButton("SKILL");
+    JButton btnSkill = new JButton("SKILL : ONE MORE");
 
-    Font f = new Font("DIALOG", Font.PLAIN, 100);
+    Font f = new Font("DIALOG", Font.PLAIN, 20);
 
 
     public void clearBoard(){
@@ -40,7 +40,7 @@ public class Chess extends JFrame implements ActionListener {
         }
         if(active){
             int add = 0;
-            if(turn=='w') add=8;
+            if(turn=='w'&&skill) add=8;
             btnSquare[4+add].setBackground(Color.BLUE);
             btnSquare[5+add].setBackground(Color.BLUE);
             btnSquare[6+add].setBackground(Color.BLUE);
@@ -48,7 +48,7 @@ public class Chess extends JFrame implements ActionListener {
         }
     }
 
-    public Chess() {
+    public Chess() throws IOException {
         for (int i=0; i<20; i++) {
             btnSquare[i] = new JButton();
             btnSquare[i].setFont(f);
@@ -63,21 +63,28 @@ public class Chess extends JFrame implements ActionListener {
             pnlGrid.add(btnSquare[i]);
         }
 
-        pnlFlow.add(pnlNull);
+        Container ctp = getContentPane();
+        ctp.setLayout(null);
+
+        pnlFlow.add(lblLevel);
         pnlFlow.add(pnlGrid);
+        pnlFlow.add(btnSkill);
         pnlFlow.add(lblTurn);
         pnlFlow.add(lblStatus);
-        pnlFlow.add(lblCheck);
-        pnlFlow.add(lblWin);
-        pnlFlow.add(lblMoves);
-        pnlFlow.add(btnSkill);
-
 
         btnSkill.addActionListener(this);
 
         lblStatus.setForeground(Color.RED);
+        lblStatus.setFont(f);
         lblWin.setForeground(Color.BLUE);
-
+        lblWin.setFont(f);
+        lblLevel.setForeground(Color.WHITE);
+        lblLevel.setFont(f);
+        lblTurn.setForeground(Color.WHITE);
+        lblTurn.setFont(f);
+        lblMoves.setForeground(Color.WHITE);
+        lblMoves.setFont(f);
+        btnSkill.setBackground(Color.ORANGE);
         try {
             display();
         } catch (IOException e) {
@@ -86,8 +93,10 @@ public class Chess extends JFrame implements ActionListener {
         setTitle("ChessGame");
         setResizable(false);
         setSize(540, 960);
-        pnlNull.setPreferredSize(new Dimension(540,100));
-        pnlGrid.setPreferredSize(new Dimension(540,675));
+        pnlGrid.setPreferredSize(new Dimension(540,800));
+        btnSkill.setPreferredSize(new Dimension(540,50));
+        btnSkill.setFont(f);
+        pnlFlow.setBackground(new Color(0x662500));
 
 
 
@@ -117,13 +126,20 @@ public class Chess extends JFrame implements ActionListener {
                 if (isGameOver()) {
                     lblStatus.setText("");
                 }
+                lblStatus.setText("");
             }
         }
         else {
-            if (e.getSource() == btnSkill & skill) {
-                more = true;
-                lblMoves.setText("Use Skill : One More");
-                skill = false;
+            if (e.getSource() == btnSkill) {
+                if(skill) {
+                    more = true;
+                    lblMoves.setText("Use Skill : One More");
+                    JOptionPane.showMessageDialog(null, "Used Skill : One More \n 한 턴 더 행동합니다.");
+                    skill = false;
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "이미 스킬을 사용하셨습니다.");
+                }
             } else {
                 for (int i = 0; i < 20; i++) {
                     if (e.getSource() == btnSquare[i]) {
@@ -198,28 +214,30 @@ public class Chess extends JFrame implements ActionListener {
         // Display Unicode chess characters
         for (int i=0; i<20; i++) {
             switch (board[i]) {
-                case "b1": btnSquare[i].setText("\u265d"); break;
-                case "p1": btnSquare[i].setText("\u265f"); break;
-                case "n1": btnSquare[i].setText("\u265e"); break;
-                case "r1": btnSquare[i].setText("\u265c"); break;
-                case "k": btnSquare[i].setText("\u265a"); break;
-                case "B1": btnSquare[i].setText("\u2657"); break;
-                case "B2":// btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("다운로드.jpg"))));break;
-                    btnSquare[i].setText("B"); break;
-                case "P1": btnSquare[i].setText("\u2659"); break;
+                case "b1": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("m1.png"))));break;
+                case "p1": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("m2.png"))));break;
+                case "n1": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("m3.png"))));break;
+                case "r1": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("m4.png"))));break;
+                case "k": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("BB.png"))));break;
+                case "B1":
+                case "B2":
+                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("gm.png"))));break;
+                case "P1":
                 case "P2":
-                    btnSquare[i].setText("P"); break;
-                case "N1": btnSquare[i].setText("\u2658"); break;
+                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("gp.png"))));break;
+                case "N1":
                 case "N2":
-                    btnSquare[i].setText("N"); break;
-                case "R1": btnSquare[i].setText("\u2656"); break;
-                case "R2":// btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("룩.jpg"))));break;
-                    btnSquare[i].setText("R"); break;
-                case "K": btnSquare[i].setText("\u2654"); break;
-                case "?": btnSquare[i].setText("?"); break;
+                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("m.png"))));break;
+                case "R1":
+                case "R2":
+                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("f.png"))));break;
+                case "K":
+                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("WB.png"))));break;
+                case "?":
+                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("item.png"))));break;
                 default:
-//                    btnSquare[i].setIcon(new ImageIcon());
-                    btnSquare[i].setText("");
+                    btnSquare[i].setIcon(new ImageIcon());
+
             }
         }
     }
@@ -237,7 +255,7 @@ public class Chess extends JFrame implements ActionListener {
                     }
                 }
                 for(int i=0;i<4;i++){
-                    if(exp[i]==1) {
+                    if(exp[i]==5) {
                         switch (i) {
                             case 0 : if(board[a]=="P1") board[a] = "P2"; break;
                             case 1 : if(board[a]=="R1") board[a] = "R2"; break;
@@ -261,11 +279,11 @@ public class Chess extends JFrame implements ActionListener {
         // Swap turns depending on the current player
         if (turn == 'w') {
             turn = 'b';
-            lblTurn.setText("Black's turn.");
+            lblTurn.setText("Enemy's turn : press to any button");
         }
         else {
             turn = 'w';
-            lblTurn.setText("White's turn.");
+            lblTurn.setText("You're turn : selcet your fmaily");
         }
     }
 
@@ -280,43 +298,32 @@ public class Chess extends JFrame implements ActionListener {
         dr = r2 - r1;		// Change of squares between start and end rows
         dc = c2 - c1;		// Change of squares between start and end columns
 
-//        System.out.println(r1+","+c1+"->"+r2+","+c2+"|"+dr+","+dc);
-        // Invalid move if source location is a black piece or destination is a white piece
         if (colour == 'w') {
             if (Character.isLowerCase(board[a].charAt(0)) || Character.isUpperCase(board[b].charAt(0))) {
- //               System.out.println(1);
                 return false;
             }
         }
-        // Invalid move if source location is a white piece or destination is a black piece
         else if (colour == 'b') {
             if (Character.isUpperCase(board[a].charAt(0)) || Character.isLowerCase(board[b].charAt(0))) {
- //               System.out.println(1);
                 return false;
             }
         }
 
-        // Check source location to see if a chess piece exists
         switch (board[a]) {
             case "*":
-                // Invalid move if source location is an empty piece
                 return false;
             case "P1":
-                // White pawns can move one square up on the same row if the square is unoccupied
                 if ((c1 == c2) && (dr == -1)) {
                     return true;
                 }
                 else {
- //                   System.out.println(2);
                     return false;
                 }
             case "p1":
-                // Black pawns can move one square down on the same row if the square is unoccupied
                 if ((c1 == c2) && (dr == 1)) {
                     return true;
                 }
                 else {
-   //                 System.out.println(2);
                     return false;
                 }
             case "P2" :
@@ -325,7 +332,6 @@ public class Chess extends JFrame implements ActionListener {
                 else return false;
             case "K":
             case "k":
-                // Kings can only move one square in any direction
                 if ((dr >= -1) && (dr <= 1) && (dc >= -1) && (dc <= 1)) {
                     return true;
                 }
@@ -335,8 +341,6 @@ public class Chess extends JFrame implements ActionListener {
                 }
             case "B1":
             case "b1":
-                // Bishops can move diagonally 1 or 2 spaces in any direction
-                // Check if moving diagonally
                 if (Math.abs(dr)==Math.abs(dc)&&Math.abs(dr)==1) {
                         return true;
                 }
@@ -360,7 +364,6 @@ public class Chess extends JFrame implements ActionListener {
                     else return false;
                 }
                 else {
-                    //                   System.out.println(4);
                     return false;
                 }
             case "N2":
@@ -368,7 +371,6 @@ public class Chess extends JFrame implements ActionListener {
                     return true;
                 }
                 else {
-                    //                   System.out.println(4);
                     return false;
                 }
             case "R1":
@@ -377,7 +379,6 @@ public class Chess extends JFrame implements ActionListener {
                     return true;
                 }
                 else {
-                    //                   System.out.println(4);
                     return false;
                 }
             case "R2":
@@ -396,10 +397,9 @@ public class Chess extends JFrame implements ActionListener {
     }
 
     public boolean isGameOver() {
-        // Check if the game is over (tie, stalemate, or either side wins)
         if (isWin()){
-            if(turn=='w')   lblWin.setText("Black Wins!");
-            else  lblWin.setText("White Wins!");
+            if(turn=='b')   JOptionPane.showMessageDialog(null,"YOU WIN!!");
+            else  JOptionPane.showMessageDialog(null,"YOU LOSE!!");
             return true;
         }
         else return false;
@@ -419,6 +419,7 @@ public class Chess extends JFrame implements ActionListener {
             if(board[i].equals("?")) return false;
         }
         lblMoves.setText("Use Item : Full Swing");
+        JOptionPane.showMessageDialog(null,"Get Item : Full Swing \n 전방의 3칸의 말을 처리합니다.");
         if(turn=='b') {
             board[4] = "*";
             board[5] = "*";
@@ -436,8 +437,7 @@ public class Chess extends JFrame implements ActionListener {
         return true;
     }
 
-    public static void main(String[] args) {
-        // Create chess board object and displays it
+    public static void main(String[] args) throws IOException {
         Chess c = new Chess();
         try {
             c.display();
