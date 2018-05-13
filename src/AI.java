@@ -4,9 +4,10 @@ import java.util.ArrayList;
 public class AI{
 
     public int doAI(String[] board, ArrayList<Integer> aPlace, ArrayList<Integer> bPlace, int stage){
-        int maxprice=0;
+        int maxprice=-999;
         int choice=0;
         int[] price = new int[aPlace.size()];
+        ArrayList<Integer> choices = new ArrayList<Integer>();
         if(stage==1) choice=(int)(Math.random()*aPlace.size());
         if(stage>=2){
             for(int i=0;i<aPlace.size();i++){
@@ -32,11 +33,16 @@ public class AI{
         }
         for(int i=0;i<price.length;i++){
             if(price[i]>maxprice) {
-                choice = i;
                 maxprice=price[i];
+                choices.clear();
+                choices.add(i);
+            }
+            else if(price[i]==maxprice){
+                choices.add(i);
             }
             System.out.println(aPlace.get(i)+"->"+bPlace.get(i)+":"+price[i]);
         }
+        choice=choices.get((int)(Math.random()*choices.size()));
         System.out.println(aPlace.get(choice)+"->"+bPlace.get(choice)+":"+price[choice]+"★");
         return choice;
     }

@@ -42,6 +42,10 @@ public class Move {
                 if(Math.abs(dc)<=1&&dr==-1)
                     return true;
                 else return false;
+            case "p2" :
+                if(Math.abs(dc)<=1&&dr==1)
+                    return true;
+                else return false;
             case "K":
             case "k":
                 if ((dr >= -1) && (dr <= 1) && (dc >= -1) && (dc <= 1)) {
@@ -59,6 +63,7 @@ public class Move {
                 else {
                     return false;
                 }
+            case "b2":
             case "B2":
                 if (Math.abs(dr)==Math.abs(dc)&&Math.abs(dr)<=2) {
                     if(Math.abs(dr)==1) return  true;
@@ -79,6 +84,7 @@ public class Move {
                     return false;
                 }
             case "N2":
+            case "n2":
                 if (Math.abs(dr)+Math.abs(dc)==3&&(Math.abs(dr)==1|Math.abs(dr)==2)) {
                     return true;
                 }
@@ -94,6 +100,7 @@ public class Move {
                     return false;
                 }
             case "R2":
+            case "r2":
                 if ((dc==0&&Math.abs(dr)<=2)||(dr==0&&Math.abs(dc)<=2)) {
                     if(Math.abs(dr)+Math.abs(dc)==1) return true;
                     else if(Math.abs(dr)==2&&board[a+dr*2].equals("*")) return  true;
