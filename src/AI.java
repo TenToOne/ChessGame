@@ -1,3 +1,5 @@
+package src;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -40,10 +42,10 @@ public class AI{
             else if(price[i]==maxprice){
                 choices.add(i);
             }
-            System.out.println(aPlace.get(i)+"->"+bPlace.get(i)+":"+price[i]);
+//            System.out.println(aPlace.get(i)+"->"+bPlace.get(i)+":"+price[i]);
         }
         choice=choices.get((int)(Math.random()*choices.size()));
-        System.out.println(aPlace.get(choice)+"->"+bPlace.get(choice)+":"+price[choice]+"★");
+//        System.out.println(aPlace.get(choice)+"->"+bPlace.get(choice)+":"+price[choice]+"★");
         return choice;
     }
 }

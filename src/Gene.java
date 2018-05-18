@@ -1,3 +1,5 @@
+package src;
+
 public class Gene {
     private StringBuilder gene;
     private int goodness = 0;

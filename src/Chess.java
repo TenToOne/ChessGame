@@ -1,3 +1,6 @@
+package src;
+
+import src.Move;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -32,7 +35,7 @@ public class Chess extends JFrame implements ActionListener {
 
     JPanel pnlGrid =  new backG();
 
-    ImageIcon back = new ImageIcon("./image/back.jpg");
+    ImageIcon back = new ImageIcon("./image/Back.jpg");
     Image backI = back.getImage();
 
     class backG extends JPanel{
@@ -254,32 +257,30 @@ public class Chess extends JFrame implements ActionListener {
     public void display() throws IOException {
         // Display Unicode chess characters
         for (int i=0; i<20; i++) {
-            switch (board[i]) {
-                case "b1": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("m1.png"))));break;
-                case "p1": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("m2.png"))));break;
-                case "n1": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("m3.png"))));break;
-                case "r1": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/m4.png"))));break;
-                case "k": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/BB.png"))));break;
-                case "B1":
-                case "B2":
-                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/gm.png"))));break;
-                case "P1":
-                case "P2":
-                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/gp.png"))));break;
-                case "N1":
-                case "N2":
-                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/m.png"))));break;
-                case "R1":
-                case "R2":
-                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/f.png"))));break;
-                case "K":
-                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/WB.png"))));break;
-                case "?":
-                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/item.png"))));break;
-                default:
-                    btnSquare[i].setIcon(new ImageIcon());
-
+            if(board[i].equals("*")){
+                btnSquare[i].setIcon(new ImageIcon()); continue;
             }
+            String name = "./image/";
+            switch (board[i].charAt(0)) {
+                case 'b': name+=("m4");break;
+                case 'p': name+=("m2");break;
+                case 'n': name+=("m3");break;
+                case 'r': name+=("m1");break;
+                case 'k': name+=("BB");break;
+                case 'B': name+=("gm");break;
+                case 'P': name+=("gp");break;
+                case 'N': name+=("m");break;
+                case 'R': name+=("f");break;
+                case 'K': name+=("WB");break;
+                case '?': name+=("item");break;
+            }
+            if(board[i].length()>1){
+                int l = (int)board[i].charAt(1)-48;
+                if(l>1){
+                    name+="_"+l;
+                }
+            }
+            btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File(name+".png"))));
         }
     }
 

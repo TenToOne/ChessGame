@@ -1,3 +1,7 @@
+package src;
+
+import src.Gene;
+
 import java.util.ArrayList;
 
 public class Heredity {
