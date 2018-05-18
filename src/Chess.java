@@ -20,7 +20,6 @@ public class Chess extends JFrame implements ActionListener {
 
     // GUI STUFF ================================================================================
     JLabel lblLevel = new JLabel();
-    JPanel pnlGrid = new JPanel(new GridLayout(5,4));
     JPanel pnlFlow = new JPanel(new FlowLayout());
     JLabel lblStatus = new JLabel();
     JLabel lblTurn = new JLabel("You're turn : selcet your fmaily");
@@ -31,27 +30,50 @@ public class Chess extends JFrame implements ActionListener {
 
     Font f = new Font("DIALOG", Font.PLAIN, 20);
 
+    JPanel pnlGrid =  new backG();
+
+    ImageIcon back = new ImageIcon("./image/back.jpg");
+    Image backI = back.getImage();
+
+    class backG extends JPanel{
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(backI, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+
 
     public void clearBoard(){
         for (int i=0; i<20; i++) {
             if (i % 8 == 0||i % 8 == 2||i % 8 == 5||i % 8 == 7) {
-                btnSquare[i].setBackground(Color.ORANGE);
+                btnSquare[i].setBackground(Color.orange);
+                btnSquare[i].setContentAreaFilled(false);
+                btnSquare[i].setBorderPainted(false);
             }
             else {
                 btnSquare[i].setBackground(Color.WHITE);
+                btnSquare[i].setContentAreaFilled(false);
+                btnSquare[i].setBorderPainted(false);
             }
         }
         if(active){
             int add = 0;
             if(turn=='w'&&skill) add=8;
             btnSquare[4+add].setBackground(Color.BLUE);
+            btnSquare[4+add].setContentAreaFilled(true);
+            btnSquare[4+add].setBorderPainted(true);
             btnSquare[5+add].setBackground(Color.BLUE);
+            btnSquare[5+add].setContentAreaFilled(true);
+            btnSquare[5+add].setBorderPainted(true);
             btnSquare[6+add].setBackground(Color.BLUE);
+            btnSquare[6+add].setContentAreaFilled(true);
+            btnSquare[6+add].setBorderPainted(true);
             active=false;
         }
     }
 
     public Chess(int stage) throws IOException {
+        pnlGrid.setLayout(new GridLayout(5,4));
        this.stage=stage;
        board = new SetBoard().setboard(stage,level);
         for (int i=0; i<20; i++) {
@@ -60,9 +82,13 @@ public class Chess extends JFrame implements ActionListener {
 
             if (i % 8 == 0||i % 8 == 2||i % 8 == 5||i % 8 == 7) {
                 btnSquare[i].setBackground(Color.ORANGE);
+                btnSquare[i].setContentAreaFilled(false);
+                btnSquare[i].setBorderPainted(false);
             }
             else {
                 btnSquare[i].setBackground(Color.WHITE);
+                btnSquare[i].setContentAreaFilled(false);
+                btnSquare[i].setBorderPainted(false);
             }
             btnSquare[i].addActionListener(this);
             pnlGrid.add(btnSquare[i]);
@@ -167,6 +193,8 @@ public class Chess extends JFrame implements ActionListener {
                             // Add to the list of valid moves for the current player
                             if (m.validateMove(a - 1, j, turn,board)) {
                                 btnSquare[j].setBackground(Color.RED);
+                                btnSquare[j].setContentAreaFilled(true);
+                                btnSquare[j].setBorderPainted(true);
                                 count++;
                             }
                         }
@@ -195,6 +223,12 @@ public class Chess extends JFrame implements ActionListener {
                     // Display message if game is over
                     if (isGameOver()) {
                         lblStatus.setText("");
+                        dispose();
+                        try {
+                            new Chess(stage+1).display();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                 }
             }
@@ -224,24 +258,24 @@ public class Chess extends JFrame implements ActionListener {
                 case "b1": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("m1.png"))));break;
                 case "p1": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("m2.png"))));break;
                 case "n1": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("m3.png"))));break;
-                case "r1": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("m4.png"))));break;
-                case "k": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("BB.png"))));break;
+                case "r1": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/m4.png"))));break;
+                case "k": btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/BB.png"))));break;
                 case "B1":
                 case "B2":
-                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("gm.png"))));break;
+                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/gm.png"))));break;
                 case "P1":
                 case "P2":
-                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("gp.png"))));break;
+                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/gp.png"))));break;
                 case "N1":
                 case "N2":
-                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("m.png"))));break;
+                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/m.png"))));break;
                 case "R1":
                 case "R2":
-                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("f.png"))));break;
+                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/f.png"))));break;
                 case "K":
-                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("WB.png"))));break;
+                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/WB.png"))));break;
                 case "?":
-                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("item.png"))));break;
+                    btnSquare[i].setIcon(new ImageIcon(ImageIO.read(new java.io.File("./image/item.png"))));break;
                 default:
                     btnSquare[i].setIcon(new ImageIcon());
 

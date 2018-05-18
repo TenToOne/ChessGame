@@ -4,7 +4,7 @@ public class Heredity {
     static final double Pc=0.7;
     static final double Pm = 0.0001;
     static final int N = 10000;
-    static final int Age = 10;
+    static final int Age = 100;
 
     static public String set(){
         ArrayList<Gene> genes = new ArrayList<Gene>();
@@ -28,7 +28,7 @@ public class Heredity {
             System.out.print(i+",");
         }*/
         double avg = (double) goodsum/N;
-        System.out.println(avg);
+//        System.out.println(avg);
 
         for(int age=0;age<Age-1;age++) {
             ArrayList<Gene> newGenes = new ArrayList<Gene>();
@@ -87,8 +87,10 @@ public class Heredity {
             genes.clear();
             genes=newGenes;
             avg = (double) goodsum/N;
-            System.out.println(avg);
+//            System.out.println(avg);
+            if(age%10==0) System.out.print("|");
         }
+        System.out.println();
         return genes.get(0).toString();
     }
 
@@ -103,7 +105,7 @@ public class Heredity {
             StringBuilder gene1 = new StringBuilder(g1.toString());
             StringBuilder gene2 = new StringBuilder(g2.toString());
             geneAge.clear();
-            for(int i=0;i<16;i++){
+            for(int i=0;i<20;i++){
                 if(Math.random()>0.5){
                     newgene1.append(gene1.toString().charAt(i));
                     newgene2.append(gene2.toString().charAt(i));
@@ -124,6 +126,10 @@ public class Heredity {
 //        System.out.println(geneAge.get(0).testGene());
 //        System.out.println(geneAge.get(1).testGene());
         return geneAge;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(set());
     }
 
 }
