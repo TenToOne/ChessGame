@@ -26,33 +26,70 @@ public class Move {
         switch (board[a]) {
             case "*":
                 return false;
-            case "P5" :
-            case "P6" :
-            case "P7" :
             case "P8" :
-                if(Math.abs(dc)<=1&&dr==-1)
+                if ((dc==-1) && (dr == 1)) {
                     return true;
-            case "P1":
-            case "P2":
-            case "P3":
+                }
+            case "P7" :
+                if ((dc==1) && (dr == 1)) {
+                    return true;
+                }
+            case "P6" :
+                if ((c1 == c2) && (dr == 1)) {
+                    return true;
+                }
+            case "P5" :
+                if ((dc==-1) && (dr == 0)) {
+                    return true;
+                }
             case "P4":
+                if ((dc==1) && (dr == 0)) {
+                    return true;
+                }
+            case "P3":
+                if ((dc==-1) && (dr == -1)) {
+                    return true;
+                }
+            case "P2":
+                if ((dc==1) && (dr == -1)) {
+                    return true;
+                }
+            case "P1":
                 if ((c1 == c2) && (dr == -1)) {
                     return true;
                 }
                 else {
                     return false;
                 }
-            case "p5" :
-            case "p6" :
-            case "p7" :
             case "p8" :
-                if(Math.abs(dc)<=1&&dr==1)
+                if ((dc==1) && (dr == -1)) {
                     return true;
-                else return false;
-            case "p1":
-            case "p2":
-            case "p3":
+                }
+            case "p7" :
+                if ((dc==-1) && (dr == 1)) {
+                    return true;
+                }
+            case "p6" :
+                if ((c1 == c2) && (dr == -1)) {
+                    return true;
+                }
+            case "p5" :
+                if ((dc==1) && (dr == 0)) {
+                    return true;
+                }
             case "p4":
+                if ((dc==-1) && (dr == 0)) {
+                    return true;
+                }
+            case "p3":
+                if ((dc==1) && (dr == 1)) {
+                    return true;
+                }
+            case "p2":
+                if ((dc==-1) && (dr == 1)) {
+                    return true;
+                }
+            case "p1":
                 if ((c1 == c2) && (dr == 1)) {
                     return true;
                 }
@@ -68,83 +105,130 @@ public class Move {
                     //                 System.out.println(3);
                     return false;
                 }
-            case "b5":
-            case "B5":
-            case "b6":
-            case "B6":
-            case "b7":
-            case "B7":
             case "b8":
             case "B8":
-                if (Math.abs(dr)==Math.abs(dc)&&Math.abs(dr)<=2) {
-                    if(Math.abs(dr)==1) return  true;
-                    else if(Math.abs(dr)==2&&board[a+(dr*2)+(dc/2)].equals("*")) return  true;
-                    else return false;
+                if ((Math.abs(dc)==1) && (dr == 0)) {
+                    return true;
+                }
+            case "b7":
+            case "B7":
+                if ((c1 == c2) && (Math.abs(dr) == 1)&&((colour=='w'&&dr>0)||(colour=='b'&&dr<0))) {
+                    return true;
+                }
+            case "b6":
+            case "B6":
+                if ((c1 == c2) && (Math.abs(dr) == 1)&&((colour=='w'&&dr<0)||(colour=='b'&&dr>0))) {
+                    return true;
+                }
+            case "b5":
+            case "B5":
+                if (Math.abs(dr)==Math.abs(dc)&&Math.abs(dr)<=3&&((colour=='w'&&dr>0)||(colour=='b'&&dr<0))) {
+                    if(board[a+(dr/3)*4+(dc/3)].equals("*")&&board[a+(dr/3)*8+(dc/3)*2].equals("*")) return  true;
+                }
+            case "B4":
+            case "b4":
+                if (Math.abs(dr)==Math.abs(dc)&&Math.abs(dr)<=3&&((colour=='w'&&dr<0)||(colour=='b'&&dr>0))) {
+                    if(board[a+(dr/3)*4+(dc/3)].equals("*")&&board[a+(dr/3)*8+(dc/3)*2].equals("*")) return  true;
+                }
+            case "B3":
+            case "b3":
+                if (Math.abs(dr)==Math.abs(dc)&&Math.abs(dr)<=2&&((colour=='w'&&dr>0)||(colour=='b'&&dr<0))) {
+                    if(board[a+(dr*2)+(dc/2)].equals("*")) return  true;
+                }
+            case "B2":
+            case "b2":
+                if (Math.abs(dr)==Math.abs(dc)&&Math.abs(dr)<=2&&((colour=='w'&&dr<0)||(colour=='b'&&dr>0))) {
+                    if(board[a+(dr*2)+(dc/2)].equals("*")) return  true;
                 }
             case "B1":
             case "b1":
-            case "B2":
-            case "b2":
-            case "B3":
-            case "b3":
-            case "B4":
-            case "b4":
                 if (Math.abs(dr)==Math.abs(dc)&&Math.abs(dr)==1) {
                     return true;
                 }
                 else {
                     return false;
                 }
-            case "N5":
-            case "n5":
-            case "N6":
-            case "n6":
-            case "N7":
-            case "n7":
             case "N8":
             case "n8":
-                if (Math.abs(dr)+Math.abs(dc)==3&&(Math.abs(dr)==1|Math.abs(dr)==2)) {
+                if (Math.abs(dr)==Math.abs(dc)&&Math.abs(dr)==1) {
+                    return true;
+                }
+            case "N7":
+            case "n7":
+                if (Math.abs(dr)+Math.abs(dc)==1) {
+                    return true;
+                }
+            case "N6":
+            case "n6":
+                if (Math.abs(dr)+Math.abs(dc)==3&&Math.abs(dr)==1) {
+                    return true;
+                }
+            case "N5":
+            case "n5":
+                if (Math.abs(dr)+Math.abs(dc)==3&&Math.abs(dr)==2&&((colour=='w'&&dr>0)||(colour=='b'&&dr<0))) {
                     return true;
                 }
             case "N4":
             case "n4":
+                if (Math.abs(dr)+Math.abs(dc)==3&&Math.abs(dr)==2&&((colour=='w'&&dr<0)||(colour=='b'&&dr>0))) {
+                    return true;
+                }
             case "N3":
             case "n3":
-            case "N2":
-            case "n2":
-            case "N1":
-            case "n1":
-                if (Math.abs(dr)+Math.abs(dc)==3&&(Math.abs(dr)==1|Math.abs(dr)==2)) {
+                if (Math.abs(dr)+Math.abs(dc)==3&&(Math.abs(dr)==1)) {
                     if(Math.abs(dr)==2&&board[a+(dr*4)].equals("*")&&board[a+(dr*2)].equals("*")) return true;
                     else if(Math.abs(dc)==2&&board[a+(dc)].equals("*")&&board[a+(dc/2)].equals("*")) return true;
-                    else return false;
                 }
-                else {
-                    return false;
+            case "N2":
+            case "n2":
+                if (Math.abs(dr)+Math.abs(dc)==3&&(Math.abs(dr)==2)&&((colour=='w'&&dr>0)||(colour=='b'&&dr<0))) {
+                    if(Math.abs(dr)==2&&board[a+(dr*4)].equals("*")&&board[a+(dr*2)].equals("*")) return true;
+                    else if(Math.abs(dc)==2&&board[a+(dc)].equals("*")&&board[a+(dc/2)].equals("*")) return true;
                 }
+            case "N1":
+            case "n1":
+                if (Math.abs(dr)+Math.abs(dc)==3&&(Math.abs(dr)==2)&&((colour=='w'&&dr<0)||(colour=='b'&&dr>0))) {
+                    if(Math.abs(dr)==2&&board[a+(dr*4)].equals("*")&&board[a+(dr*2)].equals("*")) return true;
+                    else if(Math.abs(dc)==2&&board[a+(dc)].equals("*")&&board[a+(dc/2)].equals("*")) return true;
+                }
+                   return false;
             case "R8":
             case "r8":
+                if (Math.abs(dr)==Math.abs(dc)&&Math.abs(dr)<=2) {
+                    if (Math.abs(dr) == 2 && board[a + (dr * 2) + (dc / 2)].equals("*")) return true;
+                }
             case "R7":
             case "r7":
+                if (Math.abs(dr)==Math.abs(dc)&&Math.abs(dr)==1) {
+                    return true;
+                }
             case "R6":
             case "r6":
+                if ((dc==0&&Math.abs(dr)==4)) {
+                    if(board[a+(dr/4)*4].equals("*")&&board[a+(dr/3)*4].equals("*")&&board[a+(dr/3)*12].equals("*")) return  true;
+                }
             case "R5":
             case "r5":
-                if ((dc==0&&Math.abs(dr)<=2)||(dr==0&&Math.abs(dc)<=2)) {
-                    if(Math.abs(dr)+Math.abs(dc)==1) return true;
-                    else if(Math.abs(dr)==2&&board[a+dr*2].equals("*")) return  true;
-                    else if(Math.abs(dc)==2&&board[a+dc/2].equals("*")) return  true;
-                    else return false;
+                if ((dr==0&&Math.abs(dc)==3)) {
+                    if(board[a+(dc/3)].equals("*")&&board[a+(dc/3)*2].equals("*")) return  true;
                 }
             case "R4":
             case "r4":
+                if ((dc==0&&Math.abs(dr)==3)) {
+                    if(board[a+(dr/3)*4].equals("*")&&board[a+(dr/3)*8].equals("*")) return  true;
+                }
             case "R3":
             case "r3":
+                if ((dr==0&&Math.abs(dc)==2)) {
+                   if(board[a+dc/2].equals("*")) return  true;
+                }
             case "R2":
             case "r2":
+                if ((dc==0&&Math.abs(dr)==2)) {
+                    if(board[a+dr*2].equals("*")) return  true;
+                }
             case "R1":
             case "r1":
-
                 if (Math.abs(dr)+Math.abs(dc)==1) {
                     return true;
                 }

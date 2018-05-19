@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Chess extends JFrame implements ActionListener {
     static String[] board = {"b1","n1","k","r1","*","*","p1","*","*","?","*","*","*","P1","*","*","R1","K","N1","B1"};
     static char turn = 'w';
-    boolean item=true;
+    boolean item=false;
     boolean active = false;
     boolean  skill=true;
     static int[] exp = {0,0,0,0};
@@ -79,6 +79,12 @@ public class Chess extends JFrame implements ActionListener {
         pnlGrid.setLayout(new GridLayout(5,4));
        this.stage=stage;
        board = new SetBoard().setboard(stage,level);
+       for(int i=0;i<20;i++){
+           if(board[i].equals("?")){
+               item=true;
+               break;
+           }
+       }
         for (int i=0; i<20; i++) {
             btnSquare[i] = new JButton();
             btnSquare[i].setFont(f);
@@ -385,7 +391,7 @@ public class Chess extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws IOException {
-        Chess c = new Chess(2);
+        Chess c = new Chess(1);
         try {
             c.display();
         } catch (IOException e) {
