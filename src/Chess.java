@@ -11,13 +11,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Chess extends JFrame implements ActionListener {
-    static String[] board = {"b1","n1","k","r1","*","*","p1","*","*","?","*","*","*","P1","*","*","R1","K","N1","B1"};
+    static String[] board = new String[20];
     static char turn = 'w';
     boolean item=false;
     boolean active = false;
-    boolean  skill=true;
+    boolean  skill=false;
+    boolean canSkill = true;
     static int[] exp = {0,0,0,0};
-    static int[] level = {1,1,1,1};
     static int stage;
     Move m = new Move();
 
@@ -75,10 +75,14 @@ public class Chess extends JFrame implements ActionListener {
         }
     }
 
-    public Chess(int stage) throws IOException {
+    public Chess(int stage,int []exp) throws IOException {
         pnlGrid.setLayout(new GridLayout(5,4));
        this.stage=stage;
-       board = new SetBoard().setboard(stage,level);
+       if(stage<=2){
+           skill=true;
+           canSkill=false;
+       }
+       board = new SetBoard().setboard(stage,exp);
        for(int i=0;i<20;i++){
            if(board[i].equals("?")){
                item=true;
@@ -159,6 +163,7 @@ public class Chess extends JFrame implements ActionListener {
                     e1.printStackTrace();
                 }
                 if (!isItem()) lblMoves.setText("");
+                isUsedSkill();
                 clearBoard();
                 try {
                     display();
@@ -217,6 +222,7 @@ public class Chess extends JFrame implements ActionListener {
                     if (!isGameOver()) {
                         doMove(a - 1, b - 1, turn);        // Player's turn
                         if (!isItem()) lblMoves.setText("");
+                        isUsedSkill();
                         a = b = -1;
                         if (more) {
                             swapTurn();
@@ -232,16 +238,26 @@ public class Chess extends JFrame implements ActionListener {
                     // Display message if game is over
                     if (isGameOver()) {
                         lblStatus.setText("");
-                        dispose();
                         try {
-                            new Chess(stage+1).display();
+                            new Chess(stage+1,exp).display();
                         } catch (IOException e1) {
                             e1.printStackTrace();
                         }
+                        dispose();
                     }
                 }
             }
         }
+    }
+
+    private void isUsedSkill() {
+        if(!canSkill) return;
+        for(int i=0;i<20;i++){
+            if(board[i].equals("+")) return;
+        }
+        canSkill=false;
+        skill=true;
+        JOptionPane.showMessageDialog(null, "스킬을 획득 했습니다.");
     }
 
     public void doAI() throws IOException {
@@ -279,6 +295,7 @@ public class Chess extends JFrame implements ActionListener {
                 case 'R': name+=("f");break;
                 case 'K': name+=("WB");break;
                 case '?': name+=("item");break;
+                case '+': name+=("skill");break;
             }
             if(board[i].length()>1){
                 int l = (int)board[i].charAt(1)-48;
@@ -295,33 +312,29 @@ public class Chess extends JFrame implements ActionListener {
         if (m.validateMove(a, b, colour,board)) {
             if(colour=='w'){
                 if(board[b].charAt(0)!='*'){
-                    switch(board[a]){
-                        case "P1" :
+                    switch(board[a].charAt(0)){
+                        case 'P' :
                             exp[0]++;
-                            if(exp[0]==2){
-                                level[0]++;
-                                board[a] = "P2";
+                            if(exp[0]%2==0){
+                                board[a] = "P"+(exp[0]/2+1);
                             }
                             break;
-                        case "R1" :
+                        case 'R' :
                             exp[1]++;
-                            if(exp[1]==2){
-                                level[1]++;
-                                board[a] = "R2";
+                            if(exp[1]%2==0){
+                                board[a] = "R"+(exp[1]/2+1);
                             }
                             break;
-                        case "B1" :
+                        case 'B' :
                             exp[2]++;
-                            if(exp[2]==2){
-                                level[2]++;
-                                board[a] = "B2";
+                            if(exp[2]%2==0){
+                                board[a] = "B"+(exp[2]/2+1);
                             }
                             break;
-                        case "N1" :
+                        case 'N' :
                             exp[3]++;
-                            if(exp[3]==2){
-                                level[3]++;
-                                board[a] = "N2";
+                            if(exp[3]%2==0){
+                                board[a] = "N"+(exp[3]/2+1);
                             }
                             break;
                     }
@@ -391,7 +404,7 @@ public class Chess extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws IOException {
-        Chess c = new Chess(1);
+        Chess c = new Chess(1,exp);
         try {
             c.display();
         } catch (IOException e) {

@@ -1,11 +1,11 @@
 package src;
 
 public class SetBoard {
-    public String[] setboard(int stage,int[] level){
+    public String[] setboard(int stage,int[] exp){
         if(stage==1)
 //              return new String[]{"k","*","*","*","*","*","*","*","B8","*","B8","*","*","*","*","*","*","*","K","*"};
                 return new String[]{"p1","p1","k","p1","*","*","p1","*","*","?","*","*","*","P1","*","*","R1","K","N1","B1"};
-        String[] board = {"*","*","k","*","*","*","*","*","*","?","*","*","*","P1","*","*","R1","K","N1","B1"};
+        String[] board = {"*","*","k","*","*","*","*","*","*","?","*","*","*","*","*","*","*","K","*","*"};
         String enermy = Heredity.set();
         System.out.println(enermy);
         for(int i=0;i<4;i++){
@@ -49,6 +49,11 @@ public class SetBoard {
                 case "11111" : board[place]="n8"; break;
             }
         }
+        if(stage==3) board[10]="+";
+        board[13]="P"+(exp[0]/2+1);
+        board[16]="R"+(exp[1]/2+1);
+        board[18]="N"+(exp[2]/2+1);
+        board[19]="B"+(exp[3]/2+1);
         return board;
     }
 }
