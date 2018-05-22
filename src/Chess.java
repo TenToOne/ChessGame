@@ -64,7 +64,7 @@ public class Chess extends JFrame implements ActionListener {
             switch (itemnum) {
                 case 1 :
                     int add = 0;
-                    if (turn == 'w' && skill) add = 8;
+                    if (turn == 'b' && skill) add = 8;
                     btnSquare[4 + add].setBackground(Color.BLUE);
                     btnSquare[4 + add].setContentAreaFilled(true);
                     btnSquare[4 + add].setBorderPainted(true);
@@ -281,10 +281,10 @@ public class Chess extends JFrame implements ActionListener {
 
     private void isUsedSkill() {
         if(!canSkill) return;
-        if(turn=='w') {
-            for (int i = 0; i < 20; i++) {
-                if (board[i].equals("+")) return;
-            }
+        for (int i = 0; i < 20; i++) {
+            if (board[i].equals("+")) return;
+        }
+        if(turn=='b') {
             canSkill = false;
             skill = true;
             btnSkill.setBackground(Color.ORANGE);
@@ -492,7 +492,7 @@ public class Chess extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws IOException {
-        Chess c = new Chess(1,exp);
+        Chess c = new Chess(3,exp);
         try {
             c.display();
         } catch (IOException e) {

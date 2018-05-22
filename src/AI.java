@@ -10,8 +10,8 @@ public class AI{
         int choice=0;
         int[] price = new int[aPlace.size()];
         ArrayList<Integer> choices = new ArrayList<Integer>();
-        if(stage==1) choice=(int)(Math.random()*aPlace.size());
-        if(stage>=2){
+        if(stage==1) choice=(int)(Math.random()*aPlace.size());  // Level 0 AI 무작위 선택
+        if(stage>=2){ // Level 1 AI 상대말 잡기
             for(int i=0;i<aPlace.size();i++){
                 int j = bPlace.get(i);
                 for(int k=0;k<board.length;k++){
@@ -54,7 +54,7 @@ public class AI{
                     case "N6" : price[i]=9; break;
                     case "N7" : price[i]=15; break;
                     case "N8" : price[i]=18; break;
-                }
+                }// 상대말을 잡을 수 있을 경우 상대 말의 가치에 따라 가중치가 결정
             }
         }
         for(int i=0;i<price.length;i++){
