@@ -65,8 +65,8 @@ public class Gene {
                 case "11011" : goodness+=5; break;
                 case "11100" : goodness+=8; break;
                 case "11101" : goodness+=9; break;
-                case "11110" : goodness+=12; break;
-                case "11111" : goodness+=16; break;
+                case "11110" : goodness+=15; break;
+                case "11111" : goodness+=18; break;
             }
         }
         return goodness;

@@ -50,7 +50,7 @@ public class SetBoard {
             }
         }
         if(stage==3) board[10]="+";
-        if(stage==3) board[9]="?";
+        if(stage==3||stage==4) board[9]="?";
         board[13]="P"+(exp[0]/2+1);
         board[16]="R"+(exp[1]/2+1);
         board[18]="N"+(exp[2]/2+1);

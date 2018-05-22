@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Heredity {
     static final double Pc=0.7;
     static final double Pm = 0.0001;
-    static final int N = 10000;
+    static final int N = 100;
     static final int Age = 100;
 
     static public String set(int stage){
@@ -16,28 +16,20 @@ public class Heredity {
         int[] goodness = new int[N];
         double[] roulette = new double[N];
         int goodsum=0;
-        int maxInt=0;
         int[] array = new int[Age];
         switch (stage){
-            case 2 : target=15; break;
-            case 3 : target=20; break;
-            case 4 : target=25; break;
+            case 2 : target=11; break;
+            case 3 : target=11; break;
+            case 4 : target=20; break;
         }
         for(int i=0;i<N;i++){
-//            if(i%(N/100)==0) System.out.print("i");
             genes.add(new Gene());
             int good=genes.get(i).getGoodness();
             goodness[i]=good;
             goodsum+=good;
-//            System.out.print(good+",");
         }
-//        System.out.println();
-
-/*        for(int i:goodness){
-            System.out.print(i+",");
-        }*/
         double avg = (double) goodsum/N;
-//        System.out.println(avg);
+
 
         for(int age=0;age<Age-1;age++) {
             ArrayList<Gene> newGenes = new ArrayList<Gene>();
@@ -49,11 +41,8 @@ public class Heredity {
                     roulette[i] =  1.0/sum;
                 }
                 else roulette[i]=1;
-//                System.out.print(roulette[i]+",");
                 rouletteSum+=roulette[i];
             }
-//            System.out.println();
-//            System.out.println(rouletteSum);
             for(int i=0;i<N/2;i++){
                 Gene a=null,b=null;
                 double temp=0;
@@ -64,7 +53,6 @@ public class Heredity {
                     for(;;index++){
                         if((r-=roulette[index])<0) break;
                     }
-//                    System.out.println(roulette[index]);
                     if(tempIndex==-1) {
                         tempIndex=index;
                         temp =roulette[index];
@@ -78,25 +66,19 @@ public class Heredity {
                         rouletteSum+=temp;
                     }
                 }
-//                System.out.println(a+","+b);
                 ArrayList<Gene> news = crossover(a,b);
-//                System.out.println(news);
                 for(int j=0;j<2;j++){
                     newGenes.add(news.remove(0));
                 }
             }
-//            System.out.println(newGenes);
             goodsum=0;
             for(int i=0;i<N;i++){
                 goodness[i] = newGenes.get(i).getGoodness();
-//                System.out.print(goodness[i]+",");
                 goodsum+=goodness[i];
             }
-//            System.out.println();
             genes.clear();
             genes=newGenes;
             avg = (double) goodsum/N;
-//            System.out.println(avg);
             if(age%10==0) System.out.print("|");
         }
         System.out.println();
@@ -104,9 +86,6 @@ public class Heredity {
     }
 
     private static ArrayList<Gene> crossover(Gene g1,Gene g2) {
-//        System.out.println("Test2");
-//        System.out.println(geneAge.get(0).testGene());
-//        System.out.println(geneAge.get(1).testGene());
         ArrayList<Gene> geneAge = new ArrayList<Gene>();
         if(Math.random()<Pc) {
             StringBuilder newgene1 = new StringBuilder();
@@ -131,9 +110,6 @@ public class Heredity {
             geneAge.add(g1);
             geneAge.add(g2);
         }
-//        System.out.println(geneAge);
-//        System.out.println(geneAge.get(0).testGene());
-//        System.out.println(geneAge.get(1).testGene());
         return geneAge;
     }
 

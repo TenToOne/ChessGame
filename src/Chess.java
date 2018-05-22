@@ -18,6 +18,7 @@ public class Chess extends JFrame implements ActionListener {
     static int[] exp = {0,0,0,0};
     static int stage;
     int itemnum =1;
+    int t=0;
     Move m = new Move();
 
     // GUI STUFF ================================================================================
@@ -34,8 +35,9 @@ public class Chess extends JFrame implements ActionListener {
 
     JPanel pnlGrid =  new backG();
 
-    ImageIcon back = new ImageIcon("./image/Back.jpg");
-    Image backI = back.getImage();
+    ImageIcon back;
+
+    Image backI;
 
     class backG extends JPanel{
         public void paintComponent(Graphics g) {
@@ -59,32 +61,52 @@ public class Chess extends JFrame implements ActionListener {
             }
         }
         if(active){
-            int add = 0;
-            if(turn=='w'&&skill) add=8;
-            btnSquare[4+add].setBackground(Color.BLUE);
-            btnSquare[4+add].setContentAreaFilled(true);
-            btnSquare[4+add].setBorderPainted(true);
-            btnSquare[5+add].setBackground(Color.BLUE);
-            btnSquare[5+add].setContentAreaFilled(true);
-            btnSquare[5+add].setBorderPainted(true);
-            btnSquare[6+add].setBackground(Color.BLUE);
-            btnSquare[6+add].setContentAreaFilled(true);
-            btnSquare[6+add].setBorderPainted(true);
+            switch (itemnum) {
+                case 1 :
+                    int add = 0;
+                    if (turn == 'w' && skill) add = 8;
+                    btnSquare[4 + add].setBackground(Color.BLUE);
+                    btnSquare[4 + add].setContentAreaFilled(true);
+                    btnSquare[4 + add].setBorderPainted(true);
+                    btnSquare[5 + add].setBackground(Color.BLUE);
+                    btnSquare[5 + add].setContentAreaFilled(true);
+                    btnSquare[5 + add].setBorderPainted(true);
+                    btnSquare[6 + add].setBackground(Color.BLUE);
+                    btnSquare[6 + add].setContentAreaFilled(true);
+                    btnSquare[6 + add].setBorderPainted(true);
+                break;
+                case 2 :
+                    btnSquare[9].setBackground(Color.BLUE);
+                    btnSquare[9].setContentAreaFilled(true);
+                    btnSquare[9].setBorderPainted(true);
+                break;
+                case 4 :
+                    btnSquare[t].setBackground(Color.BLUE);
+                    btnSquare[t].setContentAreaFilled(true);
+                    btnSquare[t].setBorderPainted(true);
+                    break;
+            }
             active=false;
         }
     }
 
     public Chess(int stage,int []exp) throws IOException {
+        turn = 'w';
+        if(stage>=4){
+            back = new ImageIcon("./image/back2.jpg");
+        }
+        else{
+            back = new ImageIcon("./image/Back.jpg");
+        }
+        backI= back.getImage();
         pnlGrid.setLayout(new GridLayout(5,4));
        this.stage=stage;
-       if(stage<=1){
+       if(stage==1||stage==4){
            skill=true;
            canSkill=false;
        }
        if(stage==2){
            canSkill=false;
-       }
-       if(stage==2){
            item=false;
        }
        board = new SetBoard().setboard(stage,exp);
@@ -134,7 +156,8 @@ public class Chess extends JFrame implements ActionListener {
         lblTurn.setFont(f);
         lblMoves.setForeground(Color.WHITE);
         lblMoves.setFont(f);
-        btnSkill.setBackground(Color.ORANGE);
+        if(skill) btnSkill.setBackground(Color.ORANGE);
+        else btnSkill.setBackground(Color.GRAY);
         try {
             display();
         } catch (IOException e) {
@@ -188,9 +211,10 @@ public class Chess extends JFrame implements ActionListener {
                     lblMoves.setText("Use Skill : One More");
                     JOptionPane.showMessageDialog(null, "Used Skill : One More \n 한 턴 더 행동합니다.");
                     skill = false;
+                    btnSkill.setBackground(Color.GRAY);
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "이미 스킬을 사용하셨습니다.");
+                    JOptionPane.showMessageDialog(null, "스킬을 사용 할 수 없습니다.");
                 }
             } else {
                 for (int i = 0; i < 20; i++) {
@@ -257,12 +281,19 @@ public class Chess extends JFrame implements ActionListener {
 
     private void isUsedSkill() {
         if(!canSkill) return;
-        for(int i=0;i<20;i++){
-            if(board[i].equals("+")) return;
+        if(turn=='w') {
+            for (int i = 0; i < 20; i++) {
+                if (board[i].equals("+")) return;
+            }
+            canSkill = false;
+            skill = true;
+            btnSkill.setBackground(Color.ORANGE);
+            JOptionPane.showMessageDialog(null, "스킬을 획득 했습니다.");
         }
-        canSkill=false;
-        skill=true;
-        JOptionPane.showMessageDialog(null, "스킬을 획득 했습니다.");
+        else{
+            canSkill = false;
+            skill = true;
+        }
     }
 
     public void doAI() throws IOException {
@@ -293,7 +324,10 @@ public class Chess extends JFrame implements ActionListener {
                 case 'p': name+=("m2");break;
                 case 'n': name+=("m3");break;
                 case 'r': name+=("m1");break;
-                case 'k': name+=("BB");break;
+                case 'k':
+                    name+=("BB");
+                    if(stage>=4) name+="_2";
+                    break;
                 case 'B': name+=("gm");break;
                 case 'P': name+=("gp");break;
                 case 'N': name+=("m");break;
@@ -389,21 +423,69 @@ public class Chess extends JFrame implements ActionListener {
         for(int i=0;i<20;i++){
             if(board[i].equals("?")) return false;
         }
-        if(stage!=1) itemnum = (int)(Math.random()*4);
-        lblMoves.setText("Use Item : Full Swing");
-        JOptionPane.showMessageDialog(null,"Get Item : Full Swing \n 전방의 3칸의 말을 처리합니다.");
-        if(turn=='b') {
-            board[4] = "*";
-            board[5] = "*";
-            board[6] = "*";
+        if(stage!=1) itemnum = (int)(Math.random()*4)+1;
+        switch (itemnum) {
+            case 1 :
+                lblMoves.setText("Use Item : Full Swing");
+                JOptionPane.showMessageDialog(null, "Get Item : Full Swing \n 전방의 3칸의 말을 처리합니다.");
+                if (turn == 'b') {
+                    board[4] = "*";
+                    board[5] = "*";
+                    board[6] = "*";
+                } else {
+                    board[4 + 8] = "*";
+                    board[5 + 8] = "*";
+                    board[6 + 8] = "*";
+                }
+            break;
+            case 2 :
+                lblMoves.setText("Use Item : Bomb");
+                JOptionPane.showMessageDialog(null, "Get Item : Bomb \n 자폭합니다.");
+                board[9]="*";
+            break;
+            case 3 :
+                lblMoves.setText("Use Item : Training");
+                JOptionPane.showMessageDialog(null, "Get Item : Training \n 일정 확률로 말이 레벨업 합니다.");
+                if(true){
+                    if(!board[9].equals("K")&&!board[9].equals("K")) {
+                        String upgrade = "";
+                        upgrade+=board[9].charAt(0);
+                        upgrade+=((int)board[9].charAt(1)-48+1);
+                        board[9] = upgrade;
+                    }
+                }
+                for(String s:board){
+                    System.out.print(s+" ");
+                }
+            break;
+            case 4 :
+                lblMoves.setText("Use Item : One Shot");
+                JOptionPane.showMessageDialog(null, "Get Item : One Shot \n 상대말 하나를 무작위로 제거 합니다.");
+                ArrayList<Integer> tagets = new ArrayList<Integer>();
+                switch (turn){
+                    case 'w':
+                        for(int i=0;i<20;i++){
+                            if(Character.isUpperCase(board[i].charAt(0))&&!board[i].equals("K")){
+                                tagets.add(i);
+                            }
+                        }
+                    break;
+                    case 'b':
+                        for(int i=0;i<20;i++){
+                            if(Character.isLowerCase(board[i].charAt(0))&&!board[i].equals("k")){
+                                tagets.add(i);
+                            }
+                        }
+                    break;
+                }
+                if(!tagets.isEmpty()) {
+                    t = tagets.get((int) (Math.random() * tagets.size()));
+                    board[t]="*";
+                }
+            break;
         }
-        else {
-            board[4+8] = "*";
-            board[5+8] = "*";
-            board[6+8] = "*";
-        }
-        item=false;
-        if(!item) {
+        item = false;
+        if (!item) {
             active = true;
         }
         return true;
