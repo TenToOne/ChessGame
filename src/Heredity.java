@@ -10,7 +10,7 @@ public class Heredity {
     static final int N = 10000;
     static final int Age = 100;
 
-    static public String set(){
+    static public String set(int stage){
         ArrayList<Gene> genes = new ArrayList<Gene>();
         int target = 20;
         int[] goodness = new int[N];
@@ -18,6 +18,11 @@ public class Heredity {
         int goodsum=0;
         int maxInt=0;
         int[] array = new int[Age];
+        switch (stage){
+            case 2 : target=15; break;
+            case 3 : target=20; break;
+            case 4 : target=25; break;
+        }
         for(int i=0;i<N;i++){
 //            if(i%(N/100)==0) System.out.print("i");
             genes.add(new Gene());
@@ -133,7 +138,7 @@ public class Heredity {
     }
 
     public static void main(String[] args) {
-        System.out.println(set());
+        System.out.println(set(1));
     }
 
 }

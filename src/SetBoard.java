@@ -5,8 +5,8 @@ public class SetBoard {
         if(stage==1)
 //              return new String[]{"k","*","*","*","*","*","*","*","B8","*","B8","*","*","*","*","*","*","*","K","*"};
                 return new String[]{"p1","p1","k","p1","*","*","p1","*","*","?","*","*","*","P1","*","*","R1","K","N1","B1"};
-        String[] board = {"*","*","k","*","*","*","*","*","*","?","*","*","*","*","*","*","*","K","*","*"};
-        String enermy = Heredity.set();
+        String[] board = {"*","*","k","*","*","*","*","*","*","*","*","*","*","*","*","*","*","K","*","*"};
+        String enermy = Heredity.set(stage);
         System.out.println(enermy);
         for(int i=0;i<4;i++){
             String sub = (String) enermy.subSequence(i*5,(i+1)*5);
@@ -50,6 +50,7 @@ public class SetBoard {
             }
         }
         if(stage==3) board[10]="+";
+        if(stage==3) board[9]="?";
         board[13]="P"+(exp[0]/2+1);
         board[16]="R"+(exp[1]/2+1);
         board[18]="N"+(exp[2]/2+1);

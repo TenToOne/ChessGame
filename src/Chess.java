@@ -78,9 +78,15 @@ public class Chess extends JFrame implements ActionListener {
     public Chess(int stage,int []exp) throws IOException {
         pnlGrid.setLayout(new GridLayout(5,4));
        this.stage=stage;
-       if(stage<=2){
+       if(stage<=1){
            skill=true;
            canSkill=false;
+       }
+       if(stage==2){
+           canSkill=false;
+       }
+       if(stage==2){
+           item=false;
        }
        board = new SetBoard().setboard(stage,exp);
        for(int i=0;i<20;i++){
