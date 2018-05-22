@@ -12,7 +12,7 @@ public class Heredity {
 
     static public String set(int stage){
         ArrayList<Gene> genes = new ArrayList<Gene>();
-        int target = 20;
+        int target = 30;
         int[] goodness = new int[N];
         double[] roulette = new double[N];
         int goodsum=0;

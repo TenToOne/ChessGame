@@ -1,7 +1,5 @@
 package src;
 
-import src.Move;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +17,7 @@ public class Chess extends JFrame implements ActionListener {
     boolean canSkill = true;
     static int[] exp = {0,0,0,0};
     static int stage;
+    int itemnum =1;
     Move m = new Move();
 
     // GUI STUFF ================================================================================
@@ -390,6 +389,7 @@ public class Chess extends JFrame implements ActionListener {
         for(int i=0;i<20;i++){
             if(board[i].equals("?")) return false;
         }
+        if(stage!=1) itemnum = (int)(Math.random()*4);
         lblMoves.setText("Use Item : Full Swing");
         JOptionPane.showMessageDialog(null,"Get Item : Full Swing \n 전방의 3칸의 말을 처리합니다.");
         if(turn=='b') {
@@ -403,8 +403,8 @@ public class Chess extends JFrame implements ActionListener {
             board[6+8] = "*";
         }
         item=false;
-        if(!item){
-            active =true;
+        if(!item) {
+            active = true;
         }
         return true;
     }
