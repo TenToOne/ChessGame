@@ -268,7 +268,11 @@ public class Chess extends JFrame implements ActionListener {
                     if (isGameOver()) {
                         lblStatus.setText("");
                         try {
-                            new Chess(stage+1,exp).display();
+                            if(turn=='b')
+                                new Chess(stage+1,exp).display();
+                            else
+                                new Chess(stage,exp).display();
+
                         } catch (IOException e1) {
                             e1.printStackTrace();
                         }
@@ -492,7 +496,7 @@ public class Chess extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws IOException {
-        Chess c = new Chess(3,exp);
+        Chess c = new Chess(5,exp);
         try {
             c.display();
         } catch (IOException e) {

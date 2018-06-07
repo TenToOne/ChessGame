@@ -14,11 +14,6 @@ public class AI{
         if(stage>=2){ // Level 1 AI 상대말 잡기
             for(int i=0;i<aPlace.size();i++){
                 int j = bPlace.get(i);
-                for(int k=0;k<board.length;k++){
-                    if(new Move().validateMove(k,j,'w',board)){
-                        price[i]=-15;
-                    }
-                }
                 switch (board[j]){
                     case "K" : price[i]=999999; break;
                     case "?" : price[i]=20; break;
@@ -55,6 +50,16 @@ public class AI{
                     case "N7" : price[i]=15; break;
                     case "N8" : price[i]=18; break;
                 }// 상대말을 잡을 수 있을 경우 상대 말의 가치에 따라 가중치가 결정
+                if(stage>=5) {
+                    for (int k = 0; k < board.length; k++) {
+                        String[] copy = board.clone();
+                        copy[j]=board[i];
+                        if (new Move().validateMove(k, j, 'w', copy)) {
+                            price[i] = -100;
+                        }
+                    }
+                }
+                // 이동 후 만약 잡힐 상황일 경우 가지 않는다.
             }
         }
         for(int i=0;i<price.length;i++){
