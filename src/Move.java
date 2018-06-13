@@ -39,6 +39,7 @@ public class Move {
                     return true;
                 }
             case "P5" :
+            case "D" :
                 if ((dc==-1) && (dr == 0)) {
                     return true;
                 }

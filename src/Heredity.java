@@ -20,7 +20,16 @@ public class Heredity {
         switch (stage){
             case 2 : target=11; break;
             case 3 : target=11; break;
-            case 4 : target=20; break;
+            case 4 :
+            case 5 :
+            case 6 :
+                target=15; break;
+            case 7 :
+            case 8 :
+            case 9 :
+                target=20; break;
+            case 10 :
+                target=30; break;
         }
         for(int i=0;i<N;i++){
             genes.add(new Gene());

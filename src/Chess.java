@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Chess extends JFrame implements ActionListener {
@@ -16,6 +17,7 @@ public class Chess extends JFrame implements ActionListener {
     boolean  skill=false;
     boolean canSkill = true;
     static int[] exp = {0,0,0,0};
+    static int[] startexp;
     static int stage;
     int itemnum =1;
     int t=0;
@@ -64,7 +66,7 @@ public class Chess extends JFrame implements ActionListener {
             switch (itemnum) {
                 case 1 :
                     int add = 0;
-                    if (turn == 'b' && skill) add = 8;
+                    if (turn =='w' && skill) add = 8;
                     btnSquare[4 + add].setBackground(Color.BLUE);
                     btnSquare[4 + add].setContentAreaFilled(true);
                     btnSquare[4 + add].setBorderPainted(true);
@@ -75,22 +77,23 @@ public class Chess extends JFrame implements ActionListener {
                     btnSquare[6 + add].setContentAreaFilled(true);
                     btnSquare[6 + add].setBorderPainted(true);
                 break;
-                case 2 :
+                case 3 :
+                    btnSquare[t].setBackground(Color.BLUE);
+                    btnSquare[t].setContentAreaFilled(true);
+                    btnSquare[t].setBorderPainted(true);
+                break;
+                case 4 :
                     btnSquare[9].setBackground(Color.BLUE);
                     btnSquare[9].setContentAreaFilled(true);
                     btnSquare[9].setBorderPainted(true);
                 break;
-                case 4 :
-                    btnSquare[t].setBackground(Color.BLUE);
-                    btnSquare[t].setContentAreaFilled(true);
-                    btnSquare[t].setBorderPainted(true);
-                    break;
             }
             active=false;
         }
     }
 
     public Chess(int stage,int []exp) throws IOException {
+        startexp = exp.clone();
         turn = 'w';
         if(stage>=4){
             back = new ImageIcon("./image/back2.jpg");
@@ -101,14 +104,27 @@ public class Chess extends JFrame implements ActionListener {
         backI= back.getImage();
         pnlGrid.setLayout(new GridLayout(5,4));
        this.stage=stage;
-       if(stage==1||stage==4){
-           skill=true;
-           canSkill=false;
+       switch(stage) {
+           case 1:
+           case 4:
+           case 5:
+           case 7:
+           case 8:
+               skill = true;
+               canSkill = false;
+           break;
+           case 2:
+           case 10:
+               canSkill = false;
+               item = false;
+           break;
        }
-       if(stage==2){
-           canSkill=false;
-           item=false;
+       if(stage>5){
+           btnSkill = new JButton("SKILL : LEVEL UP");
        }
+       if(stage>7) {
+            btnSkill = new JButton("SKILL : NEW FAMILY");
+        }
        board = new SetBoard().setboard(stage,exp);
        for(int i=0;i<20;i++){
            if(board[i].equals("?")){
@@ -200,6 +216,12 @@ public class Chess extends JFrame implements ActionListener {
                 }
                 if (isGameOver()) {
                     lblStatus.setText("");
+                    try {
+                        new Chess(stage,startexp).display();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    dispose();
                 }
                 lblStatus.setText("");
             }
@@ -207,9 +229,54 @@ public class Chess extends JFrame implements ActionListener {
         else {
             if (e.getSource() == btnSkill) {
                 if(skill) {
-                    more = true;
-                    lblMoves.setText("Use Skill : One More");
-                    JOptionPane.showMessageDialog(null, "Used Skill : One More \n 한 턴 더 행동합니다.");
+                    if(stage<=5) {
+                        more = true;
+                        lblMoves.setText("Use Skill : One More");
+                        JOptionPane.showMessageDialog(null, "Used Skill : One More \n 한 턴 더 행동합니다.");
+                    }
+                    else if(stage<8){
+                        lblMoves.setText("Use Skill : Level Up");
+                        JOptionPane.showMessageDialog(null, "Used Skill : Level Up \n 말의 레벨이 올라갑니다.");
+                        int up = (int)Math.random()*2+2;
+                        for(int i=0;i<4;i++){
+                            exp[i]+=up;
+                        }
+                        for(int i=0;i<20;i++){
+                            switch(board[i].charAt(0)) {
+                                case 'P':
+                                        board[i] = "P" + (exp[0] / 2 + 1);
+                                    break;
+                                case 'R':
+                                        board[i] = "R" + (exp[1] / 2 + 1);
+                                    break;
+                                case 'B':
+                                        board[i] = "B" + (exp[2] / 2 + 1);
+                                    break;
+                                case 'N':
+                                    board[i] = "N" + (exp[3] / 2 + 1);
+                                    break;
+                            }
+                        }
+                        try {
+                            display();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    else{
+                        lblMoves.setText("Use Skill : New Family");
+                        JOptionPane.showMessageDialog(null, "Used Skill : New Family \n 새로운 말이 들어옵니다.");
+                        ArrayList<Integer> random = new ArrayList<>();
+                        for(int i=0;i<20;i++){
+                            if(board[i].equals("*")) random.add(i);
+                        }
+                        board[random.get((int)(Math.random()*random.size()))] = "D";
+                        try {
+                            display();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
                     skill = false;
                     btnSkill.setBackground(Color.GRAY);
                 }
@@ -268,11 +335,7 @@ public class Chess extends JFrame implements ActionListener {
                     if (isGameOver()) {
                         lblStatus.setText("");
                         try {
-                            if(turn=='b')
-                                new Chess(stage+1,exp).display();
-                            else
-                                new Chess(stage,exp).display();
-
+                            new Chess(stage+1,exp).display();
                         } catch (IOException e1) {
                             e1.printStackTrace();
                         }
@@ -337,6 +400,7 @@ public class Chess extends JFrame implements ActionListener {
                 case 'N': name+=("m");break;
                 case 'R': name+=("f");break;
                 case 'K': name+=("WB");break;
+                case 'D': name+=("doggy");break;
                 case '?': name+=("item");break;
                 case '+': name+=("skill");break;
             }
@@ -427,7 +491,8 @@ public class Chess extends JFrame implements ActionListener {
         for(int i=0;i<20;i++){
             if(board[i].equals("?")) return false;
         }
-        if(stage!=1) itemnum = (int)(Math.random()*4)+1;
+        if(stage>=7) itemnum = (int)(Math.random()*3)+1;
+        else if(stage>1) itemnum = (int)(Math.random()*4)+1;
         switch (itemnum) {
             case 1 :
                 lblMoves.setText("Use Item : Full Swing");
@@ -443,11 +508,6 @@ public class Chess extends JFrame implements ActionListener {
                 }
             break;
             case 2 :
-                lblMoves.setText("Use Item : Bomb");
-                JOptionPane.showMessageDialog(null, "Get Item : Bomb \n 자폭합니다.");
-                board[9]="*";
-            break;
-            case 3 :
                 lblMoves.setText("Use Item : Training");
                 JOptionPane.showMessageDialog(null, "Get Item : Training \n 일정 확률로 말이 레벨업 합니다.");
                 if(true){
@@ -462,7 +522,7 @@ public class Chess extends JFrame implements ActionListener {
                     System.out.print(s+" ");
                 }
             break;
-            case 4 :
+            case 3 :
                 lblMoves.setText("Use Item : One Shot");
                 JOptionPane.showMessageDialog(null, "Get Item : One Shot \n 상대말 하나를 무작위로 제거 합니다.");
                 ArrayList<Integer> tagets = new ArrayList<Integer>();
@@ -487,6 +547,11 @@ public class Chess extends JFrame implements ActionListener {
                     board[t]="*";
                 }
             break;
+            case 4 :
+                lblMoves.setText("Use Item : Bomb");
+                JOptionPane.showMessageDialog(null, "Get Item : Bomb \n 자폭합니다.");
+                board[9]="*";
+                break;
         }
         item = false;
         if (!item) {
@@ -496,7 +561,7 @@ public class Chess extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws IOException {
-        Chess c = new Chess(5,exp);
+        Chess c = new Chess(8,exp);
         try {
             c.display();
         } catch (IOException e) {
