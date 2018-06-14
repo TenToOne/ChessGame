@@ -95,7 +95,10 @@ public class Chess extends JFrame implements ActionListener {
     public Chess(int stage,int []exp) throws IOException {
         startexp = exp.clone();
         turn = 'w';
-        if(stage>=4){
+        if(stage>=8){
+            back = new ImageIcon("./image/Back3.jpg");
+        }
+        else if(stage>=4){
             back = new ImageIcon("./image/back2.jpg");
         }
         else{
