@@ -117,6 +117,10 @@ public class Chess extends JFrame implements ActionListener {
                skill = true;
                canSkill = false;
            break;
+           case 6:
+           case 9:
+               skill = true;
+               break;
            case 2:
            case 10:
                canSkill = false;
@@ -592,7 +596,7 @@ public class Chess extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws IOException {
-        Chess c = new Chess(10,exp);
+        Chess c = new Chess(9,exp);
         try {
             c.display();
         } catch (IOException e) {
