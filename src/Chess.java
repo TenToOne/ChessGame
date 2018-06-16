@@ -204,6 +204,8 @@ public class Chess extends JFrame implements ActionListener {
     boolean more = false;
     public void actionPerformed(ActionEvent e) {
         if(turn=='b'){
+            time--;
+            System.out.println(time);
             if (!isGameOver()) {
                 try {
                     doAI();
@@ -229,8 +231,6 @@ public class Chess extends JFrame implements ActionListener {
                 }
                 lblStatus.setText("");
             }
-            time--;
-            System.out.println(time);
         }
         else {
             if (e.getSource() == btnSkill) {
@@ -389,7 +389,7 @@ public class Chess extends JFrame implements ActionListener {
         ArrayList<Integer> bPlace = new ArrayList<Integer>();
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
-                if (m.validateMove(i, j, turn,board)) {
+                if (m.validateMove(i, j, turn,board)&&!(stage==10&&board[i].equals("k"))) {
                     aPlace.add(i);
                     bPlace.add(j);
                 }
@@ -414,7 +414,9 @@ public class Chess extends JFrame implements ActionListener {
                 case 'r': name+=("m1");break;
                 case 'k':
                     name+=("BB");
-                    if(stage>=4) name+="_2";
+                    if(stage>=10) name+="W";
+                    else if(stage>=7) name+="_3";
+                    else if(stage>=4) name+="_2";
                     break;
                 case 'B': name+=("gm");break;
                 case 'P': name+=("gp");break;
