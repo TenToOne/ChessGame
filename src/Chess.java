@@ -226,8 +226,6 @@ public class Chess extends JFrame implements ActionListener {
     boolean more = false;
     public void actionPerformed(ActionEvent e) {
         if(turn=='b'){
-            time--;
-            System.out.println(time);
             if(stage==10&&time==5){
                 JOptionPane.showMessageDialog(null, "Used Skill : Auxiliary troops \n 적의 지원군이 추가 됩니다.");
                 new Sound().s_effect(3);
@@ -300,6 +298,7 @@ public class Chess extends JFrame implements ActionListener {
                         int up = (int)Math.random()*2+2;
                         for(int i=0;i<4;i++){
                             exp[i]+=up;
+                            if(exp[i]>14) exp[i]=14;
                         }
                         for(int i=0;i<20;i++){
                             switch(board[i].charAt(0)) {
@@ -402,8 +401,11 @@ public class Chess extends JFrame implements ActionListener {
                                 e1.printStackTrace();
                             }
                         }
+                        time--;
+                        System.out.println(time);
                         // Display message if game is over
                         if (isGameOver()) {
+                            System.out.println("clear");
                             lblStatus.setText("");
                             if(stage==10){
                                 new Ending().ending(ed);
@@ -505,25 +507,25 @@ public class Chess extends JFrame implements ActionListener {
                     switch(board[a].charAt(0)){
                         case 'P' :
                             exp[0]++;
-                            if(exp[0]%2==0){
+                            if(exp[0]<14&&exp[0]%2==0){
                                 board[a] = "P"+(exp[0]/2+1);
                             }
                             break;
                         case 'R' :
                             exp[1]++;
-                            if(exp[1]%2==0){
+                            if(exp[1]<14&&exp[1]%2==0){
                                 board[a] = "R"+(exp[1]/2+1);
                             }
                             break;
                         case 'B' :
                             exp[2]++;
-                            if(exp[2]%2==0){
+                            if(exp[2]<14&&exp[2]%2==0){
                                 board[a] = "B"+(exp[2]/2+1);
                             }
                             break;
                         case 'N' :
                             exp[3]++;
-                            if(exp[3]%2==0){
+                            if(exp[3]<14&&exp[3]%2==0){
                                 board[a] = "N"+(exp[3]/2+1);
                             }
                             break;
@@ -554,7 +556,7 @@ public class Chess extends JFrame implements ActionListener {
 
     public boolean isGameOver() {
         if (isWin()){
-            if(turn=='b') {
+            if(turn=='b'||(time==0&&stage==10)) {
                 new Sound().s_effect(1);
                 JOptionPane.showMessageDialog(null,"YOU WIN!!");
             }
@@ -661,7 +663,7 @@ public class Chess extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws IOException {
-        Chess c = new Chess(1,exp);
+        Chess c = new Chess(5,exp);
         try {
             c.display();
         } catch (IOException e) {

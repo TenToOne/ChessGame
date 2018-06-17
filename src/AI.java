@@ -54,6 +54,7 @@ public class AI{
                     for (int k = 0; k < board.length; k++) {
                         String[] copy = board.clone();
                         copy[j]=board[i];
+                        copy[i]="*";
                         if (new Move().validateMove(k, j, 'w', copy)) {
                             price[i] = -100;
                         }
@@ -71,10 +72,10 @@ public class AI{
             else if(price[i]==maxprice){
                 choices.add(i);
             }
-//            System.out.println(aPlace.get(i)+"->"+bPlace.get(i)+":"+price[i]);
+            System.out.println(aPlace.get(i)+"->"+bPlace.get(i)+":"+price[i]);
         }
         choice=choices.get((int)(Math.random()*choices.size()));
-//        System.out.println(aPlace.get(choice)+"->"+bPlace.get(choice)+":"+price[choice]+"★");
+        System.out.println(aPlace.get(choice)+"->"+bPlace.get(choice)+":"+price[choice]+"★");
         return choice;
     }
 }
