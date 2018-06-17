@@ -22,6 +22,7 @@ public class Chess extends JFrame implements ActionListener {
     int itemnum =1;
     int t=0;
     int time=10;
+    int ed = 3;
     Move m = new Move();
 
     // GUI STUFF ================================================================================
@@ -267,11 +268,16 @@ public class Chess extends JFrame implements ActionListener {
                     e1.printStackTrace();
                 }
                 if (isGameOver()) {
-                    lblStatus.setText("");
-                    try {
-                        new Chess(stage,startexp).display();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                    if(stage==10){
+                        new Ending().ending(2);
+                    }
+                    else {
+                        lblStatus.setText("");
+                        try {
+                            new Chess(stage, startexp).display();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                     dispose();
                 }
@@ -399,10 +405,15 @@ public class Chess extends JFrame implements ActionListener {
                         // Display message if game is over
                         if (isGameOver()) {
                             lblStatus.setText("");
-                            try {
-                                new Chess(stage + 1, exp).display();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
+                            if(stage==10){
+                                new Ending().ending(ed);
+                            }
+                            else {
+                                try {
+                                    new Chess(stage + 1, exp).display();
+                                } catch (IOException e1) {
+                                    e1.printStackTrace();
+                                }
                             }
                             dispose();
                         }
@@ -562,7 +573,10 @@ public class Chess extends JFrame implements ActionListener {
             if (board[i].equals("K") || board[i].equals("k")) count++;
         }
         if(stage==10) {
-            if(time==0) return true;
+            if(time==0){
+                ed=1;
+                return true;
+            }
             boolean check = true;
             for(int i=0;i<20;i++){
                 if (Character.isUpperCase(board[i].charAt(0))) check=false;
