@@ -50,6 +50,7 @@ public class Main  extends  JFrame implements ActionListener {
         down.setBackground(Color.ORANGE);
         down.setFont(new Font("DIALOG", Font.PLAIN, 20));
         down.addActionListener(this);
+        setResizable(false);
         this.setSize(540,960);
         this.setVisible(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
