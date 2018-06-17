@@ -66,6 +66,7 @@ public class Chess extends JFrame implements ActionListener {
         if(active){
             switch (itemnum) {
                 case 1 :
+                    new Sound().s_effect(7);
                     int add = 0;
                     if (turn =='w' && skill) add = 8;
                     btnSquare[4 + add].setBackground(Color.BLUE);
@@ -79,15 +80,31 @@ public class Chess extends JFrame implements ActionListener {
                     btnSquare[6 + add].setBorderPainted(true);
                 break;
                 case 3 :
+                    new Sound().s_effect(7);
                     btnSquare[t].setBackground(Color.BLUE);
                     btnSquare[t].setContentAreaFilled(true);
                     btnSquare[t].setBorderPainted(true);
                 break;
                 case 4 :
+                    new Sound().s_effect(7);
                     btnSquare[9].setBackground(Color.BLUE);
                     btnSquare[9].setContentAreaFilled(true);
                     btnSquare[9].setBorderPainted(true);
                 break;
+                case 5 :
+                    new Sound().s_effect(7);
+                    int add2 = 0;
+                    if (turn =='b' && skill) add = 8;
+                    btnSquare[4 + add2].setBackground(Color.BLUE);
+                    btnSquare[4 + add2].setContentAreaFilled(true);
+                    btnSquare[4 + add2].setBorderPainted(true);
+                    btnSquare[5 + add2].setBackground(Color.BLUE);
+                    btnSquare[5 + add2].setContentAreaFilled(true);
+                    btnSquare[5 + add2].setBorderPainted(true);
+                    btnSquare[6 + add2].setBackground(Color.BLUE);
+                    btnSquare[6 + add2].setContentAreaFilled(true);
+                    btnSquare[6 + add2].setBorderPainted(true);
+                    break;
             }
             active=false;
         }
@@ -120,6 +137,7 @@ public class Chess extends JFrame implements ActionListener {
            case 6:
            case 9:
                skill = true;
+               canSkill = false;
                break;
            case 2:
            case 10:
@@ -210,6 +228,30 @@ public class Chess extends JFrame implements ActionListener {
         if(turn=='b'){
             time--;
             System.out.println(time);
+            if(time==5){
+                JOptionPane.showMessageDialog(null, "Used Skill : Auxiliary troops \n 적의 지원군이 추가 됩니다.");
+                new Sound().s_effect(3);
+                ArrayList<Integer> random = new ArrayList<>();
+                for(int i=0;i<20;i++){
+                    if(board[i].equals("*")) random.add(i);
+                }
+                String add="";
+                switch((int)(Math.random()*4)){
+                    case 0 : add+="p"; break;
+                    case 1 : add+="r"; break;
+                    case 2 : add+="b"; break;
+                    case 3 : add+="n"; break;
+                }
+                add+=(int)(Math.random()*8)+1;
+                System.out.println(add);
+                board[random.get((int)(Math.random()*random.size()))] = add;
+                try {
+                    display();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+            }
             if (!isGameOver()) {
                 try {
                     doAI();
@@ -240,11 +282,13 @@ public class Chess extends JFrame implements ActionListener {
             if (e.getSource() == btnSkill) {
                 if(skill) {
                     if(stage<=5) {
+                        new Sound().s_effect(3);
                         more = true;
                         lblMoves.setText("Use Skill : One More");
                         JOptionPane.showMessageDialog(null, "Used Skill : One More \n 한 턴 더 행동합니다.");
                     }
                     else if(stage<8){
+                        new Sound().s_effect(3);
                         lblMoves.setText("Use Skill : Level Up");
                         JOptionPane.showMessageDialog(null, "Used Skill : Level Up \n 말의 레벨이 올라갑니다.");
                         int up = (int)Math.random()*2+2;
@@ -274,6 +318,7 @@ public class Chess extends JFrame implements ActionListener {
                         }
                     }
                     else{
+                        new Sound().s_effect(3);
                         lblMoves.setText("Use Skill : New Family");
                         JOptionPane.showMessageDialog(null, "Used Skill : New Family \n 새로운 말이 들어옵니다.");
                         ArrayList<Integer> random = new ArrayList<>();
@@ -498,8 +543,14 @@ public class Chess extends JFrame implements ActionListener {
 
     public boolean isGameOver() {
         if (isWin()){
-            if(turn=='b')   JOptionPane.showMessageDialog(null,"YOU WIN!!");
-            else  JOptionPane.showMessageDialog(null,"YOU LOSE!!");
+            if(turn=='b') {
+                new Sound().s_effect(1);
+                JOptionPane.showMessageDialog(null,"YOU WIN!!");
+            }
+            else{
+                new Sound().s_effect(2);
+                JOptionPane.showMessageDialog(null,"YOU LOSE!!");
+            }
             return true;
         }
         else return false;
@@ -596,7 +647,7 @@ public class Chess extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws IOException {
-        Chess c = new Chess(9,exp);
+        Chess c = new Chess(10,exp);
         try {
             c.display();
         } catch (IOException e) {
