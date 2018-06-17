@@ -229,7 +229,7 @@ public class Chess extends JFrame implements ActionListener {
         if(turn=='b'){
             time--;
             System.out.println(time);
-            if(time==5){
+            if(stage==10&&time==5){
                 JOptionPane.showMessageDialog(null, "Used Skill : Auxiliary troops \n 적의 지원군이 추가 됩니다.");
                 new Sound().s_effect(3);
                 ArrayList<Integer> random = new ArrayList<>();
@@ -661,7 +661,7 @@ public class Chess extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws IOException {
-        Chess c = new Chess(10,exp);
+        Chess c = new Chess(6,exp);
         try {
             c.display();
         } catch (IOException e) {
