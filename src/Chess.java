@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Chess extends JFrame implements ActionListener {
@@ -274,6 +273,7 @@ public class Chess extends JFrame implements ActionListener {
                     else {
                         lblStatus.setText("");
                         try {
+                            exp=startexp.clone();
                             new Chess(stage, startexp).display();
                         } catch (IOException e1) {
                             e1.printStackTrace();
@@ -661,7 +661,7 @@ public class Chess extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws IOException {
-        Chess c = new Chess(6,exp);
+        Chess c = new Chess(1,exp);
         try {
             c.display();
         } catch (IOException e) {
