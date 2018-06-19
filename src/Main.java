@@ -76,7 +76,7 @@ public class Main  extends  JFrame implements ActionListener {
         else {
             switch (num) {
                 case 1:
-                    int[] start = {0, 0, 0, 0};
+                    int[] start = {0, 0, 0,0};
                     try {
                         new Chess(1, start);
                     } catch (IOException e1) {

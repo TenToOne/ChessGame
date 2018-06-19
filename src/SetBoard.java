@@ -4,7 +4,7 @@ public class SetBoard {
     public String[] setboard(int stage,int[] exp){
         if(stage==1)
 //              return new String[]{"k","*","*","*","*","*","*","*","B8","*","B8","*","*","*","*","*","*","*","K","*"};
-                return new String[]{"p1","p1","k","p1","*","*","p1","*","*","?","*","*","*","P1","*","*","R1","K","N1","B1"};
+                return new String[]{"p1","p1","k","p1","*","*","p1","*","*","?","*","*","*","P1","*","*","R5","K","N5","B5"};
         String[] board = {"*", "*", "k", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "K", "*", "*"};;
         if(stage==10){
             board[17]="*";
@@ -56,8 +56,8 @@ public class SetBoard {
         if(stage==3||stage==4||stage==7||stage==8) board[9]="?";
         board[13]="P"+(exp[0]/2+1);
         board[16]="R"+(exp[1]/2+1);
-        board[18]="N"+(exp[2]/2+1);
-        board[19]="B"+(exp[3]/2+1);
+        board[18]="B"+(exp[2]/2+1);
+        board[19]="N"+(exp[3]/2+1);
         return board;
     }
 }
