@@ -125,26 +125,10 @@ public class Chess extends JFrame implements ActionListener {
         backI= back.getImage();
         pnlGrid.setLayout(new GridLayout(5,4));
        this.stage=stage;
-       switch(stage) {
-           case 1:
-           case 4:
-           case 5:
-           case 7:
-           case 8:
-               skill = true;
-               canSkill = false;
-           break;
-           case 6:
-           case 9:
-               skill = true;
-               canSkill = false;
-               break;
-           case 2:
-           case 10:
-               canSkill = false;
-               item = false;
-           break;
-       }
+
+        skill = true;
+        canSkill = false;
+
        if(stage>5){
            btnSkill = new JButton("SKILL : LEVEL UP");
        }

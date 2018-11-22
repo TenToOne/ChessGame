@@ -10,26 +10,32 @@ public class Heredity {
     static final int N = 100;
     static final int Age = 100;
 
-    static public String set(int stage){
+    static public String set(int stage,int power){
         ArrayList<Gene> genes = new ArrayList<Gene>();
-        int target = 15;
+        int target = power;
         int[] goodness = new int[N];
         double[] roulette = new double[N];
         int goodsum=0;
         int[] array = new int[Age];
         switch (stage){
-            case 2 : target=11; break;
-            case 3 : target=11; break;
+            case 2 :
+                target*=0.8; break;
+            case 3 :
+                break;
             case 4 :
+                target*=1.2; break;
             case 5 :
+                target*=1.4; break;
             case 6 :
-                target=15; break;
+                target*=1.6; break;
             case 7 :
+                target*=1.8; break;
             case 8 :
+                target*=2.0; break;
             case 9 :
-                target=20; break;
+                target*=2.5; break;
             case 10 :
-                target=30; break;
+                target*=3; break;
         }
         for(int i=0;i<N;i++){
             genes.add(new Gene());
@@ -123,7 +129,7 @@ public class Heredity {
     }
 
     public static void main(String[] args) {
-        System.out.println(set(1));
+        System.out.println(set(1,10));
     }
 
 }
