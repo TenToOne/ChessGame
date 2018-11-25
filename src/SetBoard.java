@@ -2,9 +2,6 @@ package src;
 
 public class SetBoard {
     public String[] setboard(int stage,int[] exp){
-        if(stage==1)
-//              return new String[]{"k","*","*","*","*","*","*","*","B8","*","B8","*","*","*","*","*","*","*","K","*"};
-                return new String[]{"p1","p1","k","p1","*","*","p1","*","*","?","*","*","*","P1","*","*","R1","K","N1","B1"};
         String[] board = {"*", "*", "k", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "K", "*", "*"};;
         if(stage==10){
             board[17]="*";

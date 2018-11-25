@@ -18,6 +18,8 @@ public class Heredity {
         int goodsum=0;
         int[] array = new int[Age];
         switch (stage){
+            case 1 :
+                target*=0.5; break;
             case 2 :
                 target*=0.8; break;
             case 3 :
