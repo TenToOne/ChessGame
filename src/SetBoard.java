@@ -53,7 +53,7 @@ public class SetBoard {
                 case "11111" : board[place]="n8"; break;
             }
         }
-        board[10]="+";
+ //       board[10]="+";
         board[9]="?";
         return board;
     }
